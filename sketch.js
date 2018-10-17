@@ -4,8 +4,8 @@ function getRandomArbitrary(min, max) {
 }
 
 //Defined X/Y, instead of window.innerHeight
-var wX = 1000;
-var wY = 600;
+var wX = window.innerWidth;
+var wY = window.innerHeight;
 
 // module aliases
 var Engine = Matter.Engine,
@@ -16,6 +16,8 @@ var Engine = Matter.Engine,
     Body = Matter.Body,
     Bodies = Matter.Bodies,
     Vector = Matter.Vector,
+    Composites = Matter.Composites,
+    Common = Matter.Common,
     Events = Matter.Events;
 
 // create an engine
@@ -32,7 +34,6 @@ var render = Render.create({
     }
 });
 
-// create two boxes and a ground
 var boxA = Bodies.rectangle(400, 200, 80, 80, {
     render: {
         fillStyle: 'red',
@@ -40,11 +41,8 @@ var boxA = Bodies.rectangle(400, 200, 80, 80, {
         lineWidth: 3
     }
 });
+World.add(world,boxA)
 
-var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
-
-// add all of the bodies to the world
-World.add(world, [boxA, ground]);
 
 // add mouse control
 var mouse = Mouse.create(render.canvas),
@@ -53,7 +51,7 @@ var mouse = Mouse.create(render.canvas),
         constraint: {
             stiffness: 0.2,
             render: {
-                visible: false
+                visible: true
             }
         }
     });
@@ -69,25 +67,56 @@ Render.lookAt(render, {
 });
 
 
+var stack = Composites.stack(20, 20, 20, 5, 0, 0, function (x, y) {
+    return Bodies.circle(x, y, Common.random(0.5, 2), { friction: 0.00001, restitution: 0.5, density: 0.001, curiosity: Math.random(), render: {fillStyle: 'white'} });
+});
+
+World.add(world, stack);
+
+//Gravity off
+engine.world.gravity.y = 0;
+
 // run the engine
 Engine.run(engine);
 
 // run the renderer
 Render.run(render);
 
+
+var xDistance, yDistance, mVector;
+var R, G, B;
 //UPDATE LOOP
 Events.on(engine, "afterUpdate", function () {
-    var xDistance = mouse.position.x - boxA.position.x;
-    var yDistance = mouse.position.y - boxA.position.y;
-    var mVector = Vector.create(xDistance, yDistance);
 
-    //Wander if close
-    if (Math.abs(xDistance) < 50 && Math.abs(yDistance) < 50) {
-        wanderVector = Vector.create(getRandomArbitrary(-1, 1), getRandomArbitrary(-1, 1));
-        Body.setVelocity(boxA, wanderVector);
-    } else {
-        Body.setVelocity(boxA, Vector.mult(mVector,0.09));
-    }
-    
+    //Iterate through balls
+    for (var i in stack.bodies) {
+        self = stack.bodies[i];
+        //Poisitioning
+        xDistance = mouse.position.x - self.position.x;
+        yDistance = mouse.position.y - self.position.y;
+        mVector = Vector.create(xDistance, yDistance);
+
+        //Colouring
+        /*
+        R = (xDistance + yDistance) % 255;
+        G = 20;
+        B = 255 - R;*/
+
+        R = self.speed * 1000 % 255;
+        G = self.speed * 1000 % 255;
+        B = self.speed * 1000 % 255;
+
+        self.render.fillStyle = "rgb("+R+','+G+','+B+")";
+
+        //Wander if close
+        if (Math.abs(xDistance) < 100*self.curiosity && Math.abs(yDistance) < 100*self.curiosity) {
+            wanderVector = Vector.create(getRandomArbitrary(-1, 1), getRandomArbitrary(-1, 1));
+            Body.setVelocity(self, wanderVector);
+        }
+        //Track mouse if far
+        else {
+            Body.setVelocity(self, Vector.mult(mVector, 0.15));
+        }
+    }    
 });
 
