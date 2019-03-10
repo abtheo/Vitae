@@ -37,12 +37,12 @@ var render = Render.create({
 var boxA = Bodies.rectangle(400, 200, 80, 80, {
     render: {
         fillStyle: 'red',
-        strokeStyle: 'blue',
         lineWidth: 3
     }
-});
-World.add(world,boxA)
 
+});
+boxA.collisionFilter.group = -1;
+World.add(world,boxA)
 
 // add mouse control
 var mouse = Mouse.create(render.canvas),
@@ -66,9 +66,11 @@ Render.lookAt(render, {
     max: { x: wX, y: wY }
 });
 
-
 var stack = Composites.stack(20, 20, 20, 5, 0, 0, function (x, y) {
-    return Bodies.circle(x, y, Common.random(0.5, 2), { friction: 0.00001, restitution: 0.5, density: 0.001, curiosity: Math.random(), render: {fillStyle: 'white'} });
+    var b = Bodies.circle(x, y, Common.random(0.5, 2), { friction: 0.00001, restitution: 0.5, density: 0.001, curiosity: Math.random() });
+    b.collisionFilter.group = -1;
+    console.log(b.collisionFilter.group);
+    return b;
 });
 
 World.add(world, stack);
@@ -82,12 +84,10 @@ Engine.run(engine);
 // run the renderer
 Render.run(render);
 
-
 var xDistance, yDistance, mVector;
-var R, G, B;
 //UPDATE LOOP
 Events.on(engine, "afterUpdate", function () {
-
+    boxA.render.fillStyle = Colour.positionColour(boxA);
     //Iterate through balls
     for (var i in stack.bodies) {
         self = stack.bodies[i];
@@ -95,18 +95,8 @@ Events.on(engine, "afterUpdate", function () {
         xDistance = mouse.position.x - self.position.x;
         yDistance = mouse.position.y - self.position.y;
         mVector = Vector.create(xDistance, yDistance);
-
-        //Colouring
-        /*
-        R = (xDistance + yDistance) % 255;
-        G = 20;
-        B = 255 - R;*/
-
-        R = self.speed * 1000 % 255;
-        G = self.speed * 1000 % 255;
-        B = self.speed * 1000 % 255;
-
-        self.render.fillStyle = "rgb("+R+','+G+','+B+")";
+        //console.log(Colour.positionColour(self));
+        self.render.fillStyle = Colour.positionColour(self);
 
         //Wander if close
         if (Math.abs(xDistance) < 100*self.curiosity && Math.abs(yDistance) < 100*self.curiosity) {
