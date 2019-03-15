@@ -8,6 +8,7 @@
 
 <script>
 import Home from './components/Home'
+import Theme from '../styles/theme.js'
 
 export default {
   name: 'App',
@@ -18,6 +19,10 @@ export default {
     return {
       //
     }
+  },
+  created: function(){
+    this.$vuetify.theme = Theme.themeBlack;
   }
+
 }
 </script>

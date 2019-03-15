@@ -1,7 +1,8 @@
 <template>
 
     <v-card
-    :hover="true">
+    :hover="true"
+    class="primary">
         Hello World
     </v-card>
 
