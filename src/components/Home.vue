@@ -37,11 +37,9 @@ export default {
   },
   methods: {
       mouseEnter: function(){
-        console.log("enter");
         this.canvas.start();
       },
       mouseLeave: function(){
-        console.log("leave");
         this.canvas.remove();
         this.canvas = new p5(s, 'canvas');
       }
@@ -58,11 +56,22 @@ var s = function (sketch) {
   };
 
   sketch.start = function(){
-    ds.simulate(3);
-  };
+    //Randomises colour
+    sketch.r=0;
+    sketch.g=0;
+    sketch.b=0;
+    var rColors = [getRandomInt(0,1), getRandomInt(0,1), getRandomInt(0,1)];
+    //Disables black
+    if (!rColors.includes(1)){
+        rColors[getRandomInt(0,2)] = 1;
+    }
 
-  sketch.fadeOut = function(){
-      sketch.clear();
+    if (rColors[0] == 1) sketch.r = 255;
+    if (rColors[1] == 1) sketch.g = 255;
+    if (rColors[2] == 1) sketch.b = 255;
+
+    //Begin Simulation
+    ds.simulate(3);
   };
 
   sketch.getMouse = function(){
@@ -161,9 +170,7 @@ sketch.PenroseLSystem.prototype.render = function () {
       //'W', 'X', 'Y', 'Z' symbols don't actually correspond to a turtle action
       if( step == 'F') {
         
-        //Randomises colour
-        
-        sketch.stroke(getRandomInt(0,255),0, getRandomInt(0,255) );
+        sketch.stroke(sketch.r,sketch.g, sketch.b);
 
         for(let j=0; j < this.repeats; j++) {
           sketch.line(0, 0, 0, -this.drawLength);
