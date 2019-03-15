@@ -51,10 +51,13 @@ var s = function (sketch) {
   //Setup
   sketch.setup = function(){
     sketch.createCanvas(400, 400);
+    //Generate new geometry each spawn
+    sketch.rTheta = getRandomInt(3,19);
     ds = new sketch.PenroseLSystem();
 
   };
 
+//Sets all context variables
   sketch.start = function(){
     //Randomises colour
     sketch.r=0;
@@ -70,6 +73,8 @@ var s = function (sketch) {
     if (rColors[1] == 1) sketch.g = 255;
     if (rColors[2] == 1) sketch.b = 255;
 
+    sketch.loopMulti = Math.ceil(sketch.rTheta / 10);
+    console.log(sketch.rTheta, sketch.loopMulti)
     //Begin Simulation
     ds.simulate(3);
   };
@@ -100,7 +105,7 @@ var s = function (sketch) {
 
     //please play around with the following two lines
     this.startLength = 500.0;
-    this.theta = sketch.TWO_PI / 6.0; //36 degrees, try TWO_PI / 6.0, ...
+    this.theta = sketch.TWO_PI / sketch.rTheta; //36 degrees, try TWO_PI / 6.0, ...
     this.reset();
 }
 
@@ -158,14 +163,15 @@ sketch.PenroseLSystem.prototype.iterate = function() {
 //convert production string to a turtle graphic
 sketch.PenroseLSystem.prototype.render = function () {
     sketch.translate(sketch.width / 2, sketch.height / 2);
-
+    
+    var baseL = this.production.length;
     this.steps += 30;
-    if(this.steps > this.production.length) {
-      this.steps = this.production.length;
+    if(this.steps > baseL) {
+      this.steps = baseL;
     }
 
-    for(let i=0; i<this.steps; ++i) {
-      let step = this.production.charAt(i);
+    for(let i=0; i<this.steps*sketch.loopMulti; ++i) {
+      let step = this.production.charAt(i%baseL);
 
       //'W', 'X', 'Y', 'Z' symbols don't actually correspond to a turtle action
       if( step == 'F') {
