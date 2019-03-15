@@ -25,6 +25,7 @@ export default {
   methods: {
       mouseOver: function(){
         console.log(this.canvas);
+        this.canvas.start();
       }
   }
 }
@@ -35,13 +36,16 @@ var s = function (sketch) {
   sketch.setup = function(){
     sketch.createCanvas(710, 400);
     ds = new sketch.PenroseLSystem();
+
+  };
+
+  sketch.start = function(){
     ds.simulate(3);
-    
   };
 
   sketch.getMouse = function(){
       console.log(sketch.mouseX, sketch.mouseY);
-  }
+  };
 
   //Draw
   sketch.draw = function(){
