@@ -1,6 +1,8 @@
 <template>
     <div id="canvas"
-    @mouseover="mouseOver"></div>
+    class="penrose-canvas"
+    @mouseenter="mouseEnter"
+    @mouseleave="mouseLeave"></div>
     <!--<v-card
     :hover="true"
     class="primary">
@@ -8,7 +10,18 @@
     </v-card>-->
 
 </template>
+<style>
+.penrose-canvas {
+  border-radius: 50%;
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+  border-color: white;
+  margin: 10px;
+}
 
+
+</style>
 <script>
 import p5 from 'p5'
 
@@ -23,9 +36,14 @@ export default {
     this.canvas = new p5(s, 'canvas');
   },
   methods: {
-      mouseOver: function(){
-        console.log(this.canvas);
+      mouseEnter: function(){
+        console.log("enter");
         this.canvas.start();
+      },
+      mouseLeave: function(){
+        console.log("leave");
+        this.canvas.remove();
+        this.canvas = new p5(s, 'canvas');
       }
   }
 }
@@ -34,13 +52,17 @@ var s = function (sketch) {
   let ds;
   //Setup
   sketch.setup = function(){
-    sketch.createCanvas(710, 400);
+    sketch.createCanvas(400, 400);
     ds = new sketch.PenroseLSystem();
 
   };
 
   sketch.start = function(){
     ds.simulate(3);
+  };
+
+  sketch.fadeOut = function(){
+      sketch.clear();
   };
 
   sketch.getMouse = function(){
@@ -68,7 +90,7 @@ var s = function (sketch) {
     this.ruleZ = "--YF++++WF[+ZF++++XF]--XF";
 
     //please play around with the following two lines
-    this.startLength = 460.0;
+    this.startLength = 500.0;
     this.theta = sketch.TWO_PI / 6.0; //36 degrees, try TWO_PI / 6.0, ...
     this.reset();
 }
@@ -138,10 +160,11 @@ sketch.PenroseLSystem.prototype.render = function () {
 
       //'W', 'X', 'Y', 'Z' symbols don't actually correspond to a turtle action
       if( step == 'F') {
-        var minimum = 0;
-        var maximum = 255;
-        var randomnumber = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-        sketch.stroke(randomnumber, 20, (i*20) );
+        
+        //Randomises colour
+        
+        sketch.stroke(getRandomInt(0,255),0, getRandomInt(0,255) );
+
         for(let j=0; j < this.repeats; j++) {
           sketch.line(0, 0, 0, -this.drawLength);
           sketch.noFill();
@@ -164,6 +187,10 @@ sketch.PenroseLSystem.prototype.render = function () {
     }
   }
 
+}
+
+function getRandomInt(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 </script>
