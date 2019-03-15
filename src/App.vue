@@ -1,16 +1,23 @@
 <template>
-  <div id="app">
-    <Home/>
-  </div>
+  <v-app>
+    <v-content>
+      <Home/>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Home from './components/Home'
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
     Home
+  },
+  data () {
+    return {
+      //
+    }
   }
 }
 </script>
