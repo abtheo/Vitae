@@ -1,8 +1,14 @@
 <template>
+<div id="ml-container">
     <div id="canvas"
     class="penrose-canvas"
     @mouseenter="mouseEnter"
-    @mouseleave="mouseLeave"></div>
+    @mouseleave="mouseLeave"/>
+    <template v-if="showMLBanner">
+        <p class="ml-banner">Machine Learning</p>
+    </template>
+    
+</div>
     <!--<v-card
     :hover="true"
     class="primary">
@@ -10,6 +16,7 @@
     </v-card>-->
 
 </template>
+
 <style>
 .penrose-canvas {
   border-radius: 50%;
@@ -18,6 +25,24 @@
   overflow: hidden;
   border-color: white;
   margin: 10px;
+}
+
+.ml-banner {
+    color: white;
+    font-size: 36px;
+    font-weight: 100;
+    z-index: 100;
+    top: 180px;
+    left: 90px;
+    text-shadow: 2px 2px #ff0000;
+    max-width: 400px;
+    text-align: center;
+    position: absolute;
+}
+
+.ml-container{
+    width: 400px;
+    height: 400px;
 }
 
 
@@ -29,7 +54,8 @@ export default {
   name: 'Home',
   data () {
     return {
-      canvas: null
+      canvas: null,
+      showMLBanner: false
     }
   },
   created: function(){
@@ -38,10 +64,15 @@ export default {
   methods: {
       mouseEnter: function(){
         this.canvas.start();
+        this.showMLBanner = true;
+        var colours = this.canvas.getColors();
+        console.log(colours)
+        $(".ml-banner").css('textShadow','rgb(0,0,0) 2px 2px');
       },
       mouseLeave: function(){
         this.canvas.remove();
         this.canvas = new p5(s, 'canvas');
+        this.showMLBanner = false;
       }
   }
 }
@@ -87,6 +118,10 @@ var s = function (sketch) {
   sketch.draw = function(){
     sketch.background(0);
     ds.render();
+  };
+
+  sketch.getColors = function(){
+      return sketch.r, sketch.g, sketch.b;
   };
 
   //Penrose System
