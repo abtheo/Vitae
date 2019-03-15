@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-content>
-      <!--<Home/>-->
+    
       <div id="app">
-        <div id="canvas"/>
+        <Home/>
       </div>
     </v-content>
   </v-app>
@@ -16,7 +16,7 @@ import Theme from '../styles/theme.js'
 export default {
   name: 'App',
   components: {
-    //Home
+    "Home" : Home
   },
   data () {
     return {
@@ -25,7 +25,6 @@ export default {
   },
   created: function(){
     this.$vuetify.theme = Theme.themeBlack;
-    this.canvas = new p5(s, 'canvas');
   },
 }
 </script>
