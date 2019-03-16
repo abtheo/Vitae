@@ -1,79 +1,96 @@
 <template>
-<div id="ml-container">
-    <div id="canvas"
-    class="penrose-canvas"
-    @mouseenter="mouseEnter"
-    @mouseleave="mouseLeave"/>
-    <template v-if="showMLBanner">
-        <p class="ml-banner">Machine Learning</p>
-    </template>
-    
-</div>
-    <!--<v-card
-    :hover="true"
-    class="primary">
-        Hello World
-    </v-card>-->
+<v-hover>
+  <div class="ml-container"
+      slot-scope="{ hover }"
+      :class="`elevation-${hover ? 12 : 2}`">
+      <div id="canvas"
+      class="penrose-canvas"
+      @mouseenter="mouseEnter"
+      @mouseleave="mouseLeave"/>
+      
+      <p id="ml-banner" class="ml-banner">Machine Learning</p>
+
+  </div>
+</v-hover>
 
 </template>
 
 <style>
 .penrose-canvas {
   border-radius: 50%;
-  width: 400px;
-  height: 400px;
   overflow: hidden;
   border-color: white;
-  margin: 10px;
+  width: 400px;
+  height: 400px;
+  
 }
 
 .ml-banner {
     color: white;
-    font-size: 36px;
-    font-weight: 100;
+    font-size: 38px;
+    font-weight: 300;
     z-index: 100;
     top: 180px;
-    left: 90px;
-    text-shadow: 2px 2px #ff0000;
+    left: 50px;
     max-width: 400px;
     text-align: center;
     position: absolute;
+    font-family: 'consolas';
 }
 
 .ml-container{
+    display: inline-block;
     width: 400px;
     height: 400px;
+    border-radius: 50%;
+    overflow: hidden;
+    border-color: white;
+    margin: 10px;
 }
 
 
 </style>
 <script>
 import p5 from 'p5'
+import $ from 'jquery'
+import { setTimeout } from 'timers';
 
 export default {
-  name: 'Home',
+  name: 'ML',
   data () {
     return {
       canvas: null,
-      showMLBanner: false
+      showMLBanner: true,
+      pLock: false
     }
   },
   created: function(){
     this.canvas = new p5(s, 'canvas');
   },
   methods: {
+      //TODO: Hover only on Circular Border
+      //center div to mouse:
+      //sqrt((x2 - x1)^2 + (y2 - y1)^2)
       mouseEnter: function(){
+        if (this.pLock) return;
+        this.pLock = true;
+        this.canvas.remove();
+        this.canvas = new p5(s, 'canvas');
         this.canvas.start();
         this.showMLBanner = true;
         var colours = this.canvas.getColors();
-        console.log(colours)
-        $(".ml-banner").css('textShadow','rgb(0,0,0) 2px 2px');
+        //Forces black shadow for white only
+        if (!colours.includes(0)){
+            colours = [0,0,0];
+        }
+        //Lazy force after loaded into DOM
+        setTimeout(function(){
+            $("#ml-banner").css('textShadow',`rgb(${colours[0]},${colours[1]},${colours[2]}) 1px 1px`);
+        },1);      
       },
       mouseLeave: function(){
-        this.canvas.remove();
-        this.canvas = new p5(s, 'canvas');
-        this.showMLBanner = false;
-      }
+        this.pLock = false;
+      },  
   }
 }
 
@@ -105,13 +122,9 @@ var s = function (sketch) {
     if (rColors[2] == 1) sketch.b = 255;
 
     sketch.loopMulti = Math.ceil(sketch.rTheta / 10);
-    console.log(sketch.rTheta, sketch.loopMulti)
+
     //Begin Simulation
     ds.simulate(3);
-  };
-
-  sketch.getMouse = function(){
-      console.log(sketch.mouseX, sketch.mouseY);
   };
 
   //Draw
@@ -121,7 +134,7 @@ var s = function (sketch) {
   };
 
   sketch.getColors = function(){
-      return sketch.r, sketch.g, sketch.b;
+      return [sketch.r || 0, sketch.g || 0 , sketch.b || 0];
   };
 
   //Penrose System
@@ -198,7 +211,8 @@ sketch.PenroseLSystem.prototype.iterate = function() {
 //convert production string to a turtle graphic
 sketch.PenroseLSystem.prototype.render = function () {
     sketch.translate(sketch.width / 2, sketch.height / 2);
-    
+    //Sets background colour
+    sketch.background("#cca9bb");
     var baseL = this.production.length;
     this.steps += 30;
     if(this.steps > baseL) {

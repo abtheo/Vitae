@@ -3,20 +3,24 @@
     <v-content>
     
       <div id="app">
-        <Home/>
+        <ML/>
+        <CV/>
+        
       </div>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Home from './components/Home'
+import ML from './components/ML'
+import CV from './components/CV'
 import Theme from '../styles/theme.js'
 
 export default {
   name: 'App',
   components: {
-    "Home" : Home
+    "ML" : ML,
+    "CV" : CV
   },
   data () {
     return {
