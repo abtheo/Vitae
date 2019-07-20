@@ -11,33 +11,31 @@
       <img src="@/assets/logo.png" id="logo"/>
     </v-toolbar>
 
-
-        <!--HOME-->
-        <template v-if="this.route==='Home'">
-          <ML-Blob :router="router"> </ML-Blob>
-          <CV-Blob :router="router"> </CV-Blob>
-        </template>
-
-        <!--ML-->
-        <template v-else-if="this.route==='ML'">
-          <ML />
-        </template>
-
-        <!--CV-->
-        <template v-else-if="this.route==='CV'">
-          <CV />
-        </template>
-
-        <template v-else>
-          <p>Hi</p>
-        </template>
-
+    <v-carousel fill-height class="carousel" height="90%" :cycle="false">
+      <v-carousel-item >
+          <CV-Blob class="md" :router="router"> </CV-Blob>
+      </v-carousel-item>
+      <v-carousel-item>
+          <ML-Blob class="md" :router="router"> </ML-Blob>
+      </v-carousel-item>
+    </v-carousel>
       </div>
 
 
     </v-content>
   </v-app>
 </template>
+
+<style>
+#app { 
+  height: 100%;
+}
+.md {
+  left: 39%;
+  top: 50%;
+}
+
+</style>
 
 <script>
 import ML_Blob from './components/ML_Blob'
@@ -59,7 +57,21 @@ export default {
   data () {
     return {
       canvas: null,
-      route: 'Home'
+      route: 'Home',
+
+      items: [
+        {
+          id: 1,
+          title: "CV",
+          component: ML_Blob
+        },
+        {
+          id: 2,
+          title: "ML"
+        }
+
+      ]
+
     }
   },
   created: function(){

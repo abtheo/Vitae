@@ -19,7 +19,6 @@
     overflow: hidden;
     border-color: white;
     margin: 10px;
-    margin-left: 50px;
     background-color: black;
     display: inline-block;
 }
