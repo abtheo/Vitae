@@ -6,7 +6,8 @@
       <div id="canvas"
       class="penrose-canvas"
       @mouseenter="mouseEnter"
-      @mouseleave="mouseLeave"/>
+      @mouseleave="mouseLeave"
+      @click="router('ML')"/>
       
       <p id="ml-banner" class="ml-banner">Machine Learning</p>
 
@@ -29,12 +30,13 @@
     color: white;
     font-size: 38px;
     font-weight: 300;
-    z-index: 100;
-    top: 180px;
-    left: 50px;
+    z-index: 1000;
+    top: -230px;
+    left: 36px;
+    position: relative;
+    display: inline-flex;
     max-width: 400px;
     text-align: center;
-    position: absolute;
     font-family: 'consolas';
 }
 
@@ -57,6 +59,7 @@ import { setTimeout } from 'timers';
 
 export default {
   name: 'ML_Blob',
+  props: ['router'],
   data () {
     return {
       canvas: null,

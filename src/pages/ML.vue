@@ -1,20 +1,20 @@
 <template>
-    <div id="cv-main">
-        <p>CV</p>
+    <div id="ml-main">
+        <p>ML</p>
     </div>
 </template>
 
 <style>
 #cv-main {
-    background-color: black;
+    background-color: red;
     width: 400px;
     height: 400px;
-
+    
 }
 </style>
 <script>
 export default {
-    name: "CV_Page",
+    name: "ML_Page",
     data () {
         return {}
     }
