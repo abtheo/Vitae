@@ -3,8 +3,8 @@
     <v-content>
     
       <div id="app">
-        <ML/>
-        <CV/>
+        <ML-Blob/>
+        <CV-Blob/>
         
       </div>
     </v-content>
@@ -12,15 +12,15 @@
 </template>
 
 <script>
-import ML from './components/ML'
-import CV from './components/CV'
+import ML_Blob from './components/ML_Blob'
+import CV_Blob from './components/CV_Blob'
 import Theme from '../styles/theme.js'
 
 export default {
   name: 'App',
   components: {
-    "ML" : ML,
-    "CV" : CV
+    "ML-Blob" : ML_Blob,
+    "CV-Blob" : CV_Blob,
   },
   data () {
     return {

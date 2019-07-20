@@ -56,7 +56,7 @@ import $ from 'jquery'
 import { setTimeout } from 'timers';
 
 export default {
-  name: 'ML',
+  name: 'ML_Blob',
   data () {
     return {
       canvas: null,
@@ -212,7 +212,7 @@ sketch.PenroseLSystem.prototype.iterate = function() {
 sketch.PenroseLSystem.prototype.render = function () {
     sketch.translate(sketch.width / 2, sketch.height / 2);
     //Sets background colour
-    sketch.background("#cca9bb");
+    sketch.background("#aaaaaa");
     var baseL = this.production.length;
     this.steps += 30;
     if(this.steps > baseL) {

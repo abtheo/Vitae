@@ -42,10 +42,10 @@
 
 <script>
 export default {
-  name: 'CV',
+  name: 'CV_Blob',
   data () {
     return {
-
+      
     }
   }
 }
