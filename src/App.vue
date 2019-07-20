@@ -15,7 +15,7 @@
         <!--HOME-->
         <template v-if="this.route==='Home'">
           <ML-Blob :router="router"> </ML-Blob>
-          <CV-Blob :router="router"> </CV-Blob>
+          <CV-Multi-Blob :router="router"></CV-Multi-Blob>
         </template>
 
         <!--ML-->
@@ -25,11 +25,11 @@
 
         <!--CV-->
         <template v-else-if="this.route==='CV'">
-          <CV />
+          <CV-Multi-Blob :router="router" />
         </template>
 
         <template v-else>
-          <p>Hi</p>
+          <p>Bad Condition</p>
         </template>
 
       </div>
@@ -42,8 +42,9 @@
 <script>
 import ML_Blob from './components/ML_Blob'
 import CV_Blob from './components/CV_Blob'
+import CV_Multi_Blob from './components/CV_Multi_Blob'
 
-import CV_Page from './pages/CV'
+//import CV_Page from './pages/CV'
 import ML_Page from './pages/ML'
 
 import Theme from '../styles/theme.js'
@@ -53,13 +54,15 @@ export default {
   components: {
     "ML-Blob" : ML_Blob,
     "CV-Blob" : CV_Blob,
-    "CV" : CV_Page,
+    "CV-Multi-Blob" : CV_Multi_Blob,
+    //"CV" : CV_Page,
     "ML" : ML_Page
   },
   data () {
     return {
       canvas: null,
-      route: 'Home'
+      route: 'Home',
+      cv_title: "Curriculum Vitae",
     }
   },
   created: function(){
@@ -69,7 +72,6 @@ export default {
   methods: {
     router: function(subj) {
       this.route = subj;
-      console.log(this.route)
     }
   }
 }

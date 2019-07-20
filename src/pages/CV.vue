@@ -1,9 +1,3 @@
-<template>
-    <div id="cv-main">
-        <p>CV</p>
-    </div>
-</template>
-
 <style>
 #cv-main {
     background-color: black;
@@ -12,7 +6,16 @@
 
 }
 </style>
+
+<template>
+    <div id="cv-main">
+        <p>CV</p>
+    </div>
+</template>
+
+
 <script>
+
 export default {
     name: "CV_Page",
     data () {

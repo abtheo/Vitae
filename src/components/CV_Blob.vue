@@ -1,10 +1,12 @@
+
+
 <template>
 <v-hover>
     <div class="cv-container"
     slot-scope="{ hover }"
     :class="`elevation-${hover ? 12 : 2}`"
-    @click="router">
-        <p id="cv-banner" class="cv-banner">Curriculum Vitae</p>
+    @click="router('CV')">
+      {{title}}
     </div>
  </v-hover>
 
@@ -22,33 +24,24 @@
     margin-left: 50px;
     background-color: black;
     display: inline-block;
-}
-
-
-.cv-banner {
+    line-height: 400px;
+    text-align: center;
     color: white;
+    font-family: 'consolas';
+    text-shadow: gray 2px 2px;  
     font-size: 38px;
     font-weight: 300;
-    z-index: 1000;
-    top: 170px;
-    left: 36px;
-    display: inline-flex;
-    position: relative;
-    max-width: 400px;
-    text-align: center;
-    font-family: 'consolas';
-    text-shadow: gray 2px 2px;
 }
 
 </style>
 
+
 <script>
 export default {
   name: 'CV_Blob',
-  props: ['router'],
+  props: ['router','title'],
   data () {
     return {
-      
     }
   }
 }
