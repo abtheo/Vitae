@@ -8,9 +8,15 @@
           Home
         </v-toolbar-title>
         <v-spacer></v-spacer>
+
+        <button @click="getRq('/hello')">Hello World</button>
+
       <img src="@/assets/logo.png" id="logo"/>
     </v-toolbar>
 
+
+
+<!--
     <v-carousel fill-height class="carousel" height="90%" :cycle="false">
       <v-carousel-item >
           <CV-Blob class="md" :router="router"> </CV-Blob>
@@ -18,7 +24,7 @@
       <v-carousel-item>
           <ML-Blob class="md" :router="router"> </ML-Blob>
       </v-carousel-item>
-    </v-carousel>
+    </v-carousel>-->
       </div>
 
 
@@ -46,6 +52,9 @@ import ML_Page from './pages/ML'
 
 import Theme from '../styles/theme.js'
 
+import http from "./http.js"
+
+/* eslint-disable */
 export default {
   name: 'App',
   components: {
@@ -59,19 +68,6 @@ export default {
       canvas: null,
       route: 'Home',
 
-      items: [
-        {
-          id: 1,
-          title: "CV",
-          component: ML_Blob
-        },
-        {
-          id: 2,
-          title: "ML"
-        }
-
-      ]
-
     }
   },
   created: function(){
@@ -82,6 +78,16 @@ export default {
     router: function(subj) {
       this.route = subj;
       console.log(this.route)
+    },
+    getRq: function(path) {
+      //var basepath = "http://127.0.0.1:5000/";
+      http.get({
+        url:path,
+        }).then(response => {
+          this.status = response.statusCode;
+          console.log(response)
+          alert(response.responseText)
+      });
     }
   }
 }
