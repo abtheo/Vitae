@@ -14,7 +14,7 @@
       <img src="@/assets/logo.png" id="logo"/>
     </v-toolbar>
 
-
+  
 
 <!--
     <v-carousel fill-height class="carousel" height="90%" :cycle="false">
