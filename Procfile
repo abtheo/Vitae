@@ -1,1 +1,1 @@
-web: cd src && npm run serve
+web: cd src && npm run serveg
