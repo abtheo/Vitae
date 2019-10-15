@@ -1,1 +1,1 @@
-web: cd src && npm restore && npm run serve
+web: cd src && npm install && npm run serve
