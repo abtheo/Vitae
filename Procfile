@@ -1,1 +1,3 @@
-web: cd src && npm install && npm run serve
+
+npm run build
+web: node server.js
