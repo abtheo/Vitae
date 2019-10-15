@@ -3,9 +3,13 @@
     <div class="cv-container"
     slot-scope="{ hover }"
     :class="`elevation-${hover ? 12 : 2}`"
-    @click="router">
+    @click="generateMultiBlobs">
         <p id="cv-banner" class="cv-banner">Curriculum Vitae</p>
     </div>
+
+    <template v-if="multiBlobsEnabled">
+
+    </template>
  </v-hover>
 
 </template>
@@ -47,6 +51,27 @@ export default {
   props: ['router'],
   data () {
     return {
+      multiBlobsList: 
+      {
+        A:
+        {
+          Name: "A",
+          ID: 0,
+          Path: "/a"
+        },
+        B: 
+        {
+          Name: "B",
+          ID: 1,
+          Path: "/b"
+        }
+      }
+
+    }
+  },
+  methods: {
+    generateMultiBlobs: function(){
+      this.multiBlobsEnabled = !this.multiBlobsEnabled;
       
     }
   }
